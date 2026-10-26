@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Bloom Branch · Kebun Kode</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Nunito:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;--paper:#fffcf5;--bg:#f7f8f0;--sage:#cde2cd;--mint:#e6f1de;--sky:#cee5f2;--green:#3f6958;--ink:#2f4841;--muted:#526a63;--wood:#d8be98;--butter:#f2dfa6;--pink:#f7c8d4;--bd:#cedbd0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+body{margin:0;color:var(--ink);font:15px/1.5 Nunito,'Trebuchet MS',system-ui,sans-serif;background:radial-gradient(#dfeed5 2px,transparent 2.5px) 0 0/26px 26px,var(--bg)}
+h1,h2,h3,button,.pill,.eyebrow,select{font-family:Fredoka,'Trebuchet MS',system-ui,sans-serif}
+h2{margin:2px 0 0;font-size:25px;line-height:1.2}p{margin:4px 0}
+.muted{color:var(--muted)}.eyebrow{text-transform:uppercase;letter-spacing:2px;font-size:11px;font-weight:600;color:var(--muted)}
+button,select{cursor:pointer;min-height:44px;padding:8px 16px;border-radius:999px;border:2px solid #fff;background:var(--paper);color:var(--ink);font-size:14px;font-weight:500;box-shadow:0 3px 0 #b8cabc;transition:transform .12s,background .15s}
+button:hover:not(:disabled){background:var(--mint);transform:translateY(-1px)}button:active:not(:disabled){transform:translateY(2px);box-shadow:0 1px 0 #b8cabc}
+button:disabled{opacity:.5;cursor:default}button.pri{background:var(--green);color:var(--paper);box-shadow:0 3px 0 #2a4f40}button.pri:hover:not(:disabled){background:#345747}button.blue{background:var(--sky);box-shadow:0 3px 0 #8fb6c8}
+button:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid #315f78;outline-offset:3px}
+.hud{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 28px;background:var(--paper);border-bottom:2px dashed #bcd6bf;flex-wrap:wrap}
+.brand{display:flex;gap:9px;align-items:center}.brand svg{width:34px;height:40px}.brand b{font:600 23px Fredoka,sans-serif;letter-spacing:-.5px;color:var(--green)}.brand small{display:block;font-size:10px;letter-spacing:1.4px;color:var(--muted)}
+.pills{display:flex;gap:7px;flex-wrap:wrap}.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:30px;background:#e8f0e4;font-size:13px;font-weight:500}.pill.coin{background:var(--butter)}
+.mini{width:56px;height:8px;border-radius:8px;background:#fff;overflow:hidden;display:inline-block}.mini i{display:block;height:100%;border-radius:8px;background:#84af80;transition:width .3s}.mini.w i{background:#8bb9cf}
+.layout{max-width:1500px;margin:auto;padding:22px 24px;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:22px}
+.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:10px}
+.world{position:relative;width:100%;overflow:hidden;border-radius:34px;border:4px solid #fff;box-shadow:0 10px 0 #cfe3c9,0 18px 30px #3f695822;background:#d7e5b9}
+#stage{position:absolute;left:0;top:0;transform-origin:0 0}
+.t{position:absolute;width:44px;height:44px;display:flex;align-items:center;justify-content:center}
+.t svg{width:44px;height:44px;overflow:visible}
+.gr{background:#cfe3bd}.gr.b{background:#c6dcb2}.pa{background:#efe3c4}
+.f{background:#c9a97f;border-radius:10px;margin:1px;width:42px;height:42px;box-shadow:inset 0 -4px 0 #a98765;background-image:radial-gradient(#a98765 1.5px,transparent 2px);background-size:9px 9px;transition:background-color .3s}
+.f.w{background-color:#8d6a4f;box-shadow:inset 0 -4px 0 #6f523d}.f.u{background:#d6e6c2;box-shadow:none;border:2px dashed #b7d0a6}
+.f.r::after{content:"";position:absolute;inset:-2px;border-radius:12px;border:3px solid var(--pink);animation:pulse 1.2s ease-in-out infinite}
+.crop svg{animation:sway 3.2s ease-in-out infinite;transform-origin:50% 90%}
+#me{position:absolute;width:44px;height:44px;z-index:5;transition:left .13s,top .13s;pointer-events:none}
+#me svg{width:56px;height:56px;margin:-14px -6px;overflow:visible;filter:drop-shadow(0 3px 1px #35483133)}
+#me.hop svg{animation:hop .25s}.eyes{animation:blink 4.5s infinite;transform-box:fill-box;transform-origin:center}
+.sun{position:absolute;top:8px;right:14px;width:62px;z-index:6;pointer-events:none}.sun svg{width:100%;animation:spin 30s linear infinite}
+.cld{position:absolute;z-index:6;pointer-events:none;opacity:.8;animation:cloud 22s ease-in-out infinite alternate}
+.petal{position:absolute;top:-30px;font-size:18px;opacity:.7;z-index:6;pointer-events:none;animation:fall linear infinite}
+.rain{position:absolute;inset:0;z-index:7;pointer-events:none;overflow:hidden;display:none;background:#4a6b7a22}.rain span{position:absolute;top:-20px;font-size:13px;animation:fall .9s linear infinite}
+.label{position:absolute;top:12px;left:14px;z-index:8;background:#fffcf5dd;border-radius:14px;padding:6px 12px;font:500 12px Fredoka,sans-serif}
+.fx{position:fixed;z-index:60;pointer-events:none;font-size:22px;animation:fly 1s ease-out forwards}
+.card{background:var(--paper);border:2px dashed #bcd6bf;border-radius:30px}
+.inv{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:14px 0 8px}
+.stk{display:inline-flex;flex-direction:column;align-items:center;width:62px;padding:5px 4px;border-radius:16px;background:#fff7d6;border:2px dashed #e7c76b;font:500 12px Fredoka,sans-serif;cursor:pointer;min-height:0;box-shadow:none}
+.stk svg{width:32px;height:32px}.stk.on{background:#e4f0d3;border:2px solid var(--green)}.stk.h{background:#fde9ee;border-color:#f0b3c3;cursor:default}
+.pad{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:6px 0}.pad button{min-width:48px;padding:6px 12px}
+.info{padding:14px 18px;margin-top:10px;font-size:14px}.bar{height:8px;background:#e5e9dd;border-radius:8px;overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;background:#84af80;border-radius:8px;transition:width .3s}
+.nb-top{padding:20px 22px;background:radial-gradient(#fff9 2px,transparent 2.5px) 0 0/18px 18px,linear-gradient(110deg,#e5efdf,#fbe9ee);border-radius:28px 28px 0 0}
+.nb-body{padding:16px 22px 20px}
+.vars{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px}.vars span{background:#e9f1f5;border:1px solid #d4e2e8;border-radius:8px;font:12px monospace;padding:3px 8px}
+.editor{display:flex;border:2px solid #a6b8a9;border-radius:14px;overflow:hidden;background:#fcfcf7}
+#nums{padding:12px 8px;width:38px;flex:none;text-align:right;color:#728777;background:#f0f3e9;white-space:pre;font:14px/24px monospace;user-select:none;overflow:hidden;height:300px}
+textarea{width:100%;height:300px;border:0;resize:none;padding:12px;font:14px/24px ui-monospace,'Courier New',monospace;background:transparent;color:#315f64;tab-size:4;white-space:pre;overflow:auto}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:12px 0}
+#log{min-height:84px;max-height:170px;overflow:auto;background:#f0f4ea;border-radius:14px;padding:8px 12px;font-size:13px}#log .e{background:#f6e4dd;color:#823f38;border-radius:8px;padding:2px 8px;margin:2px 0}#log .ok{color:var(--green);font-weight:700}
+details{border-top:1px dashed var(--bd);padding-top:10px;margin-top:12px}summary{cursor:pointer;font:500 14px Fredoka,sans-serif}
+.title{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:24px;background:linear-gradient(160deg,#dfefea,#c7e1e9 50%,#d1e5c3)}.title[hidden]{display:none}
+.tcard{max-width:460px;text-align:center;padding:30px 36px;background:#fffcf5ee;border:3px solid #fff;border-radius:46px;box-shadow:0 20px 80px #3f695830;position:relative;z-index:2}
+.tcard h1{font:600 52px/1 Fredoka,sans-serif;color:var(--green);margin:10px 0 14px}.tcard h1 em{color:#f08fab;font-style:normal}.tcard svg{width:96px;animation:bob 3s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-5px)}}@keyframes hop{40%{transform:translateY(-9px)}}@keyframes sway{50%{transform:rotate(3deg)}}@keyframes pulse{50%{opacity:.4}}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes cloud{to{transform:translateX(40px)}}@keyframes fall{to{transform:translateY(560px) rotate(40deg)}}
+@keyframes blink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}@keyframes fly{to{transform:translate(var(--dx),var(--dy));opacity:0}}
+@media(max-width:1000px){.layout{grid-template-columns:1fr;max-width:760px;padding:14px 12px}.hud{padding:12px 14px}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<div class="title" id="title"><div class="tcard"><div id="tBunny"></div><p class="eyebrow">Tanam logika, tumbuhkan cerita</p><h1>Bloom <em>Branch</em></h1><p class="muted">Ngoding Nara si kelinci petani: gerak, cangkul, tanam, siram, panen, lalu jual di pasar.</p><button class="pri" id="bStart" style="width:100%;margin-top:14px">🌱 Mulai Bertani</button></div></div>
+<header class="hud"><div class="brand"><svg viewBox="0 0 40 48" aria-hidden="true"><path d="M20 44V24M20 30L7 18M20 23L32 10" fill="none" stroke="#3f6958" stroke-width="3" stroke-linecap="round"/><path d="M7 20C-2 11 1 4 4 3c11 1 14 11 3 17" fill="#a1c8a0"/><path d="M25 20C22 8 30 1 39 2c2 12-5 18-14 18" fill="#78a99a"/></svg><div><b>Bloom Branch</b><small>KEBUN KODE</small></div></div><div class="pills" id="hud"></div></header>
+<main class="layout">
+<section><div class="head"><div><span class="eyebrow">Sudut kecil untuk tumbuh</span><h2>Kebun Embun</h2></div><span class="muted" style="font-size:11px">Tersimpan otomatis</span></div>
+<div class="world" id="world"><div id="stage"><div id="tiles"></div><div id="me"></div></div><div class="sun"><svg viewBox="0 0 60 60" aria-hidden="true"><g stroke="#f5cf6b" stroke-width="4" stroke-linecap="round"><path d="M30 3v8M30 49v8M3 30h8M49 30h8M11 11l6 6M43 43l6 6M49 11l-6 6M17 43l-6 6"/></g><circle cx="30" cy="30" r="14" fill="#fbe08a"/></svg></div><svg class="cld" style="top:36px;left:20px;width:90px" viewBox="0 0 90 40" aria-hidden="true"><path d="M8 34a14 14 0 0 1 12-22 18 18 0 0 1 34-3 14 14 0 0 1 28 12 8 8 0 0 1-4 13z" fill="#fff"/></svg><div class="rain" id="rain"></div><span class="label" id="wlabel"></span></div>
+<div class="inv" id="inv"></div>
+<div class="pad" aria-label="Kontrol manual"><button data-k="a">◀</button><button data-k="w">▲</button><button data-k="s">▼</button><button data-k="d">▶</button><button class="pri" data-k="e">✋ Aksi (E)</button><button class="blue" id="bDay">☀️ Lanjut Hari</button></div>
+<p class="muted" style="text-align:center;font-size:13px">WASD/panah jalan · E aksi cerdas · 1 2 3 pilih benih · N lanjut hari</p>
+<div class="card info" id="tile"></div></section>
+<section class="card"><div class="nb-top"><span class="eyebrow">Catatan kode · Belajar lewat keputusan kecil</span><h2>Program Nara</h2><p class="muted">Tulis perintah, tekan Jalankan, lihat Nara bekerja. Target: 1000 koin 🪙</p></div>
+<div class="nb-body"><div class="row" style="margin-top:0"><label class="muted" for="tpl">Contoh:</label><select id="tpl"></select></div>
+<div class="vars" aria-label="Variabel"><span>x</span><span>y</span><span>energy</span><span>water_left</span><span>seeds</span><span>tilled</span><span>planted</span><span>wet</span><span>ready</span><span>crop</span><span>coins</span><span>is_raining</span></div>
+<div class="editor"><div id="nums" aria-hidden="true">1</div><textarea id="code" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Editor kode"></textarea></div>
+<div class="row"><button class="pri" id="bRun">▶ Jalankan</button><button id="bStop" disabled>■ Stop</button><button id="bSave">↺ Reset Kebun</button><label class="muted">Kecepatan <input type="range" id="spd" min="30" max="500" value="150" style="vertical-align:middle"></label></div>
+<div id="log" role="log" aria-live="polite"></div>
+<details><summary>📖 Panduan kode</summary><p class="muted"><b>Gerak:</b> moveRight() moveLeft() moveUp() moveDown()<br><b>Kebun:</b> till() plant("wheat") water() harvest()<br><b>Pasar/rumah:</b> buy("carrot") sell_all() refill() sleep() wait()<br><b>Tanaman:</b> wheat 🌾 3 hari (beli 5, jual 12) · carrot 🥕 4 hari (10/28) · pumpkin 🎃 6 hari (20/70)<br><b>Energi:</b> gerak 1, till 3, plant 2, water 2, harvest 2. Habis? sleep() di rumah. Kaleng air maks 10, isi di sumur.<br><b>Alur:</b> if / elif / else · for i in range(n): · while kondisi: · def nama():<br><b>Variabel:</b> x y day coins energy water_left seeds harvest_count is_raining at_shop at_well at_home tilled planted wet ready crop age<br>Teks pakai kutip: crop == "wheat". Indentasi 4 spasi.</p></details></div></section>
+</main>
+<script>
+const W=14,H=10,T=44,HOME=[1,1],WELL=[5,1],SHOP=[12,1],MAX=4000;
+const CR={wheat:{d:3,buy:5,sell:12,e:'🌾'},carrot:{d:4,buy:10,sell:28,e:'🥕'},pumpkin:{d:6,buy:20,sell:70,e:'🎃'}},NM=Object.keys(CR);
+const inF=(x,y)=>x>=3&&x<=10&&y>=3&&y<=8,key=(x,y)=>x+','+y,rain=d=>d%4===0;
+const $=id=>document.getElementById(id),sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const base=()=>({px:1,py:2,coins:50,en:100,wl:10,day:1,sd:{wheat:3,carrot:0,pumpkin:0},hv:{wheat:0,carrot:0,pumpkin:0},t:{},won:0});
+let S=base(),running=false,stop=false,steps=0,sel='wheat',funcs={};
+const TPL={
+"1 · Latihan jalan & tanam":'# Nara mulai di (1,2). Petak pertama ada di (3,3).\nmoveRight()\nmoveRight()\nmoveDown()\nfor i in range(3):\n    till()\n    plant("wheat")\n    water()\n    moveRight()\n',
+"2 · Satu baris pintar":'# Satu fungsi untuk satu petak\ndef urus():\n    if not tilled:\n        till()\n    if not planted and seeds > 0:\n        plant()\n    if planted and not wet and water_left > 0:\n        water()\n    if ready:\n        harvest()\n\nmoveRight()\nmoveRight()\nmoveDown()\nfor i in range(8):\n    urus()\n    moveRight()\n',
+"3 · Ke pasar lalu belanja":'# Dari (1,2) ke pasar di (12,1)\nfor i in range(11):\n    moveRight()\nmoveUp()\nsell_all()\nwhile coins >= 10 and seeds < 8:\n    buy("carrot")\n',
+"4 · Tidur sampai besok":'# Pulang ke rumah (1,1), tidur, lalu isi air di sumur (5,1)\nmoveUp()\nsleep()\nfor i in range(4):\n    moveRight()\nrefill()\n',
+"5 · Bebas (kosong)":'# Tulis programmu sendiri!\n'};
+for(const k in TPL){const o=document.createElement('option');o.textContent=k;$('tpl').appendChild(o)}
+$('tpl').onchange=()=>{$('code').value=TPL[$('tpl').value];persist()};
+function persist(){try{localStorage.setItem('hc_v1',JSON.stringify({S,code:$('code').value}))}catch(e){}}
+function load(){try{const j=JSON.parse(localStorage.getItem('hc_v1'));if(j&&j.S&&j.S.sd){S=j.S;$('code').value=j.code||TPL["1 · Latihan jalan & tanam"];return}}catch(e){}$('code').value=TPL["1 · Latihan jalan & tanam"]}
+function log(t,c){const d=document.createElement('div');if(c)d.className=c;d.textContent=t;$('log').appendChild(d);$('log').scrollTop=1e5}
+const sum=o=>Object.values(o).reduce((a,b)=>a+b,0);
+
+/* ---------- generated SVG assets ---------- */
+const SV=(b,v='0 0 44 44')=>`<svg viewBox="${v}" aria-hidden="true">${b}</svg>`;
+const BUNNY=SV(`<ellipse cx="22" cy="48" rx="13" ry="3" fill="#0002"/><ellipse cx="14" cy="14" rx="4.5" ry="12" fill="#fff8f0" stroke="#e5cfc0" stroke-width="1.5"/><ellipse cx="14" cy="15" rx="2" ry="8" fill="#f7c8d4"/><ellipse cx="30" cy="14" rx="4.5" ry="12" fill="#fff8f0" stroke="#e5cfc0" stroke-width="1.5" transform="rotate(8 30 14)"/><ellipse cx="30" cy="15" rx="2" ry="8" fill="#f7c8d4" transform="rotate(8 30 14)"/><rect x="11" y="34" width="22" height="13" rx="6" fill="#7fa497"/><rect x="14" y="35" width="16" height="11" rx="3" fill="#a1c8a0"/><circle cx="22" cy="28" r="12" fill="#fff8f0" stroke="#e5cfc0" stroke-width="1.5"/><g class="eyes"><circle cx="17.5" cy="27" r="2" fill="#2f4841"/><circle cx="26.5" cy="27" r="2" fill="#2f4841"/></g><circle cx="14" cy="31" r="2.4" fill="#f7c8d4" opacity=".8"/><circle cx="30" cy="31" r="2.4" fill="#f7c8d4" opacity=".8"/><path d="M20.5 31q1.5 1.6 3 0" stroke="#2f4841" stroke-width="1.2" fill="none" stroke-linecap="round"/><path d="M8 20h28" stroke="#d8be98" stroke-width="3" stroke-linecap="round"/><path d="M12 20q10-14 20 0z" fill="#f2dfa6"/><path d="M12 20q10-14 20 0" stroke="#d8be98" stroke-width="1.5" fill="none"/><path d="M12 19.5h20" stroke="#f08fab" stroke-width="2"/>`,'0 0 44 52');
+const CROP=(c,st)=>{const g='#78a99a',g2='#a1c8a0';
+if(st===0)return SV(`<path d="M22 36V28" stroke="${g}" stroke-width="2.5" stroke-linecap="round"/><path d="M22 29c-8 0-9-7-9-7 8-1 9 4 9 7zM22 29c8 0 9-7 9-7-8-1-9 4-9 7z" fill="${g2}"/>`);
+if(st===1)return SV(`<path d="M22 38V22" stroke="${g}" stroke-width="3" stroke-linecap="round"/><path d="M22 34c-10 0-12-9-12-9 10-2 12 4 12 9zM22 28c10 0 12-9 12-9-10-2-12 4-12 9zM22 22c-6-1-7-8-7-8 7 0 8 5 7 8z" fill="${g2}"/><circle cx="22" cy="14" r="3" fill="#fff" opacity=".0"/>`);
+if(c==='wheat')return SV(`<g stroke="#c9a14a" stroke-width="2" stroke-linecap="round"><path d="M13 38l-1-18M22 38V14M31 38l1-18"/></g><g fill="#f2cf6b" stroke="#d9ac45"><ellipse cx="12" cy="17" rx="3" ry="6"/><ellipse cx="22" cy="11" rx="3.4" ry="7"/><ellipse cx="32" cy="17" rx="3" ry="6"/></g><path d="M6 38q8-5 10 0M28 38q4-5 10 0" stroke="${g}" stroke-width="3" fill="none"/><path class="spk" d="M36 6l1.5 3.5L41 11l-3.5 1.5L36 16l-1.5-3.5L31 11l3.5-1.5z" fill="#fff6c0"/>`);
+if(c==='carrot')return SV(`<path d="M22 24c-6-4-9-14-4-18 3 3 4 9 4 18zM22 24c0-9 2-15 6-17 4 5 1 13-6 17z" fill="${g2}" stroke="${g}"/><path d="M15 26c0-5 14-5 14 0 0 6-7 15-7 15s-7-9-7-15z" fill="#f6a35c" stroke="#e0813a" stroke-width="1.5"/><path d="M18 30h5M20 35h4" stroke="#e0813a" stroke-width="1.2" stroke-linecap="round"/>`);
+return SV(`<path d="M22 14c0-5 3-7 6-7" stroke="${g}" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M26 11c5-4 11 0 9 4-4 1-8 0-9-4z" fill="${g2}"/><ellipse cx="22" cy="28" rx="16" ry="13" fill="#f7a64f" stroke="#e08a30" stroke-width="1.5"/><path d="M22 15c-8 4-8 22 0 26M22 15c8 4 8 22 0 26" stroke="#e08a30" stroke-width="1.5" fill="none"/><path class="spk" d="M7 6l1.5 3.5L12 11l-3.5 1.5L7 16l-1.5-3.5L2 11l3.5-1.5z" fill="#fff6c0"/>`)};
+const HOUSESV=SV(`<rect x="6" y="26" width="32" height="24" rx="4" fill="#f7ebca" stroke="#e3d3a8"/><path d="M1 30L22 6l21 24z" fill="#7fa497" stroke="#5b8275" stroke-width="2.5" stroke-linejoin="round"/><rect x="18" y="35" width="9" height="15" rx="4.5" fill="#b39470"/><rect x="9" y="33" width="7" height="8" rx="2" fill="#b7d9e0" stroke="#fffaf0" stroke-width="2"/><rect x="30" y="33" width="6" height="8" rx="2" fill="#b7d9e0" stroke="#fffaf0" stroke-width="2"/><circle cx="22" cy="16" r="3" fill="#fff8e9"/>`,'0 0 44 52');
+const WELLSV=SV(`<ellipse cx="22" cy="40" rx="14" ry="4" fill="#0001"/><rect x="9" y="26" width="26" height="14" rx="6" fill="#d9d4c4" stroke="#b8b09c" stroke-width="1.5"/><ellipse cx="22" cy="27" rx="13" ry="5" fill="#8fc3d6" stroke="#b8b09c" stroke-width="1.5"/><path d="M11 27V12M33 27V12" stroke="#b39470" stroke-width="3" stroke-linecap="round"/><path d="M6 14L22 3l16 11z" fill="#f2a6b6" stroke="#d98598" stroke-width="1.5" stroke-linejoin="round"/>`);
+const SHOPSV=SV(`<rect x="5" y="22" width="34" height="23" rx="3" fill="#dbc39c"/><rect x="9" y="30" width="26" height="15" fill="#fff8e9"/><path d="M2 22l4-14h32l4 14z" fill="#fff8e9" stroke="#a7ccd9" stroke-width="1"/><path d="M6 8h8l-2 14H2zm16 0h8l1 14h-10zm16 0h-2l4 14h-8z" fill="#a7ccd9"/><rect x="14" y="2" width="16" height="7" rx="3" fill="#f9f2d8" stroke="#d8be98"/><text x="22" y="8" text-anchor="middle" font-size="5" font-family="sans-serif" fill="#597e70">PASAR</text><circle cx="16" cy="37" r="3.5" fill="#f6a35c"/><circle cx="26" cy="38" r="3.5" fill="#f08fab"/>`,'0 0 44 48');
+const TREE=SV(`<rect x="19" y="26" width="6" height="14" rx="2" fill="#b39470"/><circle cx="22" cy="20" r="15" fill="#88b38b"/><circle cx="16" cy="15" r="9" fill="#a6c79b"/><circle cx="28" cy="22" r="7" fill="#a6c79b" opacity=".7"/>`);
+const FLOWER=SV(`<path d="M22 40V26" stroke="#78a99a" stroke-width="2.5"/><g fill="#f7c8d4"><circle cx="22" cy="19" r="5"/><circle cx="16" cy="25" r="5"/><circle cx="28" cy="25" r="5"/><circle cx="22" cy="31" r="0"/></g><circle cx="22" cy="24" r="3.5" fill="#fbe08a"/>`);
+const SEEDSVG=c=>SV(`<ellipse cx="22" cy="26" rx="13" ry="15" fill="#fff4d6" stroke="#d8be98" stroke-width="2"/><path d="M13 20h18" stroke="#d8be98" stroke-width="2"/><g transform="translate(9 22) scale(.55)">${CROP(c,2).replace(/<\/?svg[^>]*>/g,'')}</g>`);
+$('tBunny').innerHTML=BUNNY;$('me').innerHTML=BUNNY;
+/* petals + rain */
+for(let i=0;i<7;i++){const p=document.createElement('span');p.className='petal';p.textContent='🌸';p.style.cssText=`left:${i*15+3}%;animation-duration:${9+i*1.7}s;animation-delay:${-i*2}s`;$('world').appendChild(p)}
+for(let i=0;i<26;i++){const p=document.createElement('span');p.textContent='💧';p.style.cssText=`left:${i*4}%;animation-delay:${-(i%7)*.13}s`;$('rain').appendChild(p)}
+/* ---------- world ---------- */
+const hash=(x,y)=>(x*7+y*13+x*y)%17;
+const onPath=(x,y)=>(y===2&&x>=1&&x<=12)||(x===1&&y<=2)||(x===5&&y<=2)||(x===12&&y<=2);
+const bld={[key(...HOME)]:HOUSESV,[key(...WELL)]:WELLSV,[key(...SHOP)]:SHOPSV};
+function ctx(){const t=S.t[key(S.px,S.py)],c=t&&t.c;return{x:S.px,y:S.py,day:S.day,coins:S.coins,energy:S.en,water_left:S.wl,seeds:sum(S.sd),harvest_count:sum(S.hv),is_raining:rain(S.day),at_shop:S.px===SHOP[0]&&S.py===SHOP[1],at_well:S.px===WELL[0]&&S.py===WELL[1],at_home:S.px===HOME[0]&&S.py===HOME[1],tilled:!!t,planted:!!c,wet:!!t&&t.w,ready:!!c&&t.a>=CR[c].d,crop:c||'',age:c?t.a:0}}
+let face=1,prev=null;
+function fit(){const w=$('world'),s=w.clientWidth/(W*T);$('stage').style.transform=`scale(${s})`;w.style.height=H*T*s+'px'}
+addEventListener('resize',fit);
+function fx(e,n=1){const r=$('me').getBoundingClientRect();for(let i=0;i<n;i++){const s=document.createElement('span');s.className='fx';s.textContent=e;s.style.cssText=`left:${r.left+r.width/2}px;top:${r.top}px;--dx:${(Math.random()-.5)*60}px;--dy:${-30-Math.random()*30}px`;document.body.appendChild(s);setTimeout(()=>s.remove(),1000)}}
+function render(){let h='';
+for(let y=0;y<H;y++)for(let x=0;x<W;x++){const k=key(x,y),st=`left:${x*T}px;top:${y*T}px`,b=bld[k];
+if(inF(x,y)){const t=S.t[k],c=t&&t.c,r=c&&t.a>=CR[c].d;
+h+=`<div class="t f ${t?(t.w?'w':''):'u'}${r?' r':''}${c?' crop':''}" style="${st}">${c?CROP(c,r?2:t.a>=CR[c].d/2?1:0):''}</div>`}
+else{const cls=onPath(x,y)?'pa':(x+y)%2?'gr b':'gr';let d='';
+if(b)d=`<div style="position:absolute;left:0;bottom:0;width:44px">${b}</div>`;
+else if(!onPath(x,y)){const q=hash(x,y);if((x<=0||x>=13||y>=9)&&q%3===0)d=`<div style="position:absolute;left:-6px;bottom:-4px;width:56px">${TREE}</div>`;else if(q===4||q===9)d=FLOWER}
+h+=`<div class="t ${cls}" style="${st}">${d}</div>`}}
+$('tiles').innerHTML=h;const me=$('me');me.style.left=S.px*T+'px';me.style.top=S.py*T+'px';
+if(prev&&(prev.px!==S.px||prev.py!==S.py)){if(S.px!==prev.px)face=S.px>prev.px?1:-1;me.classList.remove('hop');void me.offsetWidth;me.classList.add('hop')}
+me.firstChild.style.transform=`scaleX(${face})`;
+const c=ctx(),pct=v=>Math.round(v);
+$('hud').innerHTML=`<span class="pill">📅 Hari ${S.day}</span><span class="pill">${rain(S.day)?'🌧 Hujan':'☀️ Cerah'}</span><span class="pill coin">🪙 ${S.coins}</span><span class="pill">⚡<span class="mini"><i style="width:${S.en}%"></i></span>${S.en}</span><span class="pill">🚿<span class="mini w"><i style="width:${S.wl*10}%"></i></span>${S.wl}/10</span>`;
+$('inv').innerHTML=NM.map(n=>`<button class="stk${sel===n?' on':''}" data-s="${n}" title="Pilih benih ${n}">${SEEDSVG(n)}<span>${S.sd[n]}</span></button>`).join('')+NM.map(n=>`<span class="stk h" title="Hasil panen ${n}">${CROP(n,2)}<span>${S.hv[n]}</span></span>`).join('');
+$('wlabel').textContent=rain(S.day)?'Hujan! Tanah disiram otomatis 🌧':'Hari yang cerah untuk menanam';$('rain').style.display=rain(S.day)?'block':'none';
+$('tile').innerHTML=`<b>Nara di (${S.px},${S.py})</b> · `+(c.at_shop?'Pasar Willow: beli benih / jual panen':c.at_well?'Sumur: isi kaleng air':c.at_home?'Rumah: tidur memulihkan energi':c.planted?`${CR[c.crop].e} ${c.crop}, umur ${c.age}/${CR[c.crop].d}${c.ready?' · <b>siap panen!</b>':''}${c.wet?' · basah 💧':' · kering'}<div class="bar"><i style="width:${c.age/CR[c.crop].d*100}%"></i></div>`:c.tilled?'tanah sudah dicangkul, siap ditanami':inF(S.px,S.py)?'tanah belum dicangkul':'rumput');
+if(prev){if(S.coins>prev.coins)fx('🪙',3);if(S.wl<prev.wl)fx('💧',2);if(sum(S.hv)>sum(prev.hv))fx('✨',3);if(sum(S.sd)<sum(prev.sd))fx('🌱')}
+prev={px:S.px,py:S.py,coins:S.coins,wl:S.wl,hv:{...S.hv},sd:{...S.sd}};
+fit();if(S.coins>=1000&&!S.won){S.won=1;log('🎉 Target 1000 koin tercapai! Kamu petani sukses.','ok')}}
+const E=(n,m)=>{const e=new Error(`Baris ${n}: ${m}`);e.user=true;return e};
+const ACTS=['moveRight','moveLeft','moveUp','moveDown','till','plant','water','harvest','buy','sell_all','refill','sleep','wait'];
+function parse(src){const L=src.replace(/\t/g,'    ').split('\n').map((t,i)=>({n:i+1,t})).filter(o=>o.t.trim()&&!o.t.trim().startsWith('#'));let i=0;
+function sub(ind,l){const b=block(ind+4);if(!b.length)throw E(l.n,'blok masih kosong, isi dengan perintah berindentasi 4 spasi.');return b}
+function block(ind){const out=[];
+while(i<L.length){const l=L[i],sp=l.t.match(/^ */)[0].length,s=l.t.trim();
+if(sp<ind)break;if(sp%4)throw E(l.n,'indentasi harus kelipatan 4 spasi.');if(sp>ind)throw E(l.n,'indentasi terlalu masuk.');i++;let m;
+if(/^(if|elif|for|while|def)\b/.test(s)&&!s.endsWith(':'))throw E(l.n,'tambahkan tanda titik dua (:) di akhir baris.');
+if(s==='else')throw E(l.n,'tambahkan tanda titik dua setelah else.');
+if(m=s.match(/^for (\w+) in range\((\d+)\):$/))out.push({k:'for',v:m[1],n:+m[2],b:sub(ind,l),ln:l.n});
+else if(m=s.match(/^while (.+):$/))out.push({k:'while',c:m[1],b:sub(ind,l),ln:l.n});
+else if(m=s.match(/^def (\w+)\(\):$/))out.push({k:'def',name:m[1],b:sub(ind,l),ln:l.n});
+else if(m=s.match(/^if (.+):$/))out.push({k:'if',br:[{c:m[1],b:sub(ind,l),ln:l.n}]});
+else if(m=s.match(/^elif (.+):$/)){const p=out[out.length-1];if(!p||p.k!=='if'||p.hasElse)throw E(l.n,'elif harus tepat setelah if.');p.br.push({c:m[1],b:sub(ind,l),ln:l.n})}
+else if(s==='else:'){const p=out[out.length-1];if(!p||p.k!=='if'||p.hasElse)throw E(l.n,'else harus tepat setelah if.');p.hasElse=1;p.br.push({c:null,b:sub(ind,l),ln:l.n})}
+else if(m=s.match(/^(\w+)\(\s*(?:["']?(\w+)["']?)?\s*\)$/))out.push({k:'act',a:m[1],arg:m[2]||null,ln:l.n});
+else throw E(l.n,'sintaks belum didukung. Cek Panduan kode.')}
+return out}
+const r=block(0);if(i<L.length)throw E(L[i].n,'indentasi tidak sesuai.');return r}
+function val(tok,env,ln){tok=tok.trim();if(/^-?\d+(\.\d+)?$/.test(tok))return+tok;if(tok==='True')return true;if(tok==='False')return false;
+let m=tok.match(/^(["'])(.*)\1$/);if(m)return m[2];if(Object.prototype.hasOwnProperty.call(env,tok))return env[tok];throw E(ln,`"${tok}" tidak dikenal.`)}
+function term(t,env,ln){t=t.trim();if(!t)throw E(ln,'kondisi kosong. Contoh: water_left > 0');let neg=false;if(t.startsWith('not ')){neg=true;t=t.slice(4)}
+const m=t.match(/^(.+?)\s*(<=|>=|==|!=|<|>)\s*(.+)$/);let r;
+if(m){const a=val(m[1],env,ln),b=val(m[3],env,ln);if(typeof a!==typeof b)throw E(ln,'bandingkan nilai sejenis (angka dengan angka, teks dengan teks).');
+r=m[2]==='<'?a<b:m[2]==='<='?a<=b:m[2]==='>'?a>b:m[2]==='>='?a>=b:m[2]==='=='?a===b:a!==b}
+else{r=val(t,env,ln);if(typeof r!=='boolean')throw E(ln,'kondisi harus perbandingan atau True/False.')}
+return neg?!r:r}
+const cond=(s,env,ln)=>s.split(/\s+or\s+/).some(o=>o.split(/\s+and\s+/).every(t=>term(t,env,ln)));
+const dirs={moveRight:[1,0],moveLeft:[-1,0],moveUp:[0,-1],moveDown:[0,1]};
+function advance(){S.day++;for(const k in S.t){const t=S.t[k];if(t.c&&t.w)t.a=Math.min(CR[t.c].d,t.a+1);t.w=rain(S.day)}}
+const pay=n=>{if(S.en<n)return false;S.en-=n;return true};
+const TIRED='Nara kelelahan. Pulang ke rumah dan gunakan sleep().';
+function act(a,arg){const k=key(S.px,S.py),t=S.t[k],c=ctx();
+if(dirs[a]){const x=S.px+dirs[a][0],y=S.py+dirs[a][1];if(x<0||y<0||x>=W||y>=H)return'Nara menabrak pagar.';if(!pay(1))return TIRED;S.px=x;S.py=y;return null}
+switch(a){
+case'wait':return null;
+case'till':if(!inF(S.px,S.py))return'till(): berdirilah di area kebun.';if(t)return'till(): tanah sudah dicangkul.';if(!pay(3))return TIRED;S.t[k]={c:null,a:0,w:rain(S.day)};return null;
+case'plant':{if(!t)return'plant(): cangkul dulu dengan till().';if(t.c)return'plant(): sudah ada tanaman.';const n=arg||(NM.find(q=>S.sd[q]>0));if(!n||!CR[n])return arg?`plant(): tanaman "${arg}" tidak ada.`:'plant(): benih habis.';if(S.sd[n]<1)return`plant(): benih ${n} habis.`;if(!pay(2))return TIRED;S.sd[n]--;t.c=n;t.a=0;return null}
+case'water':if(!t)return'water(): tidak ada tanah di sini.';if(S.wl<1)return'water(): kaleng kosong, isi di sumur dengan refill().';if(!pay(2))return TIRED;S.wl--;t.w=true;return null;
+case'harvest':if(!c.ready)return'harvest(): tanaman belum siap.';if(!pay(2))return TIRED;S.hv[t.c]++;t.c=null;t.a=0;return null;
+case'buy':{if(!c.at_shop)return'buy(): hanya bisa di pasar.';const n=arg||sel;if(!CR[n])return`buy(): "${n}" tidak dijual.`;if(S.coins<CR[n].buy)return`buy(): koin kurang (${n} = ${CR[n].buy}).`;S.coins-=CR[n].buy;S.sd[n]++;return null}
+case'sell_all':{if(!c.at_shop)return'sell_all(): hanya bisa di pasar.';if(!sum(S.hv))return'sell_all(): keranjang kosong.';NM.forEach(n=>{S.coins+=S.hv[n]*CR[n].sell;S.hv[n]=0});return null}
+case'refill':if(!c.at_well)return'refill(): hanya bisa di sumur.';S.wl=10;return null;
+case'sleep':if(!c.at_home)return'sleep(): hanya bisa di rumah.';S.en=100;advance();return null}}
+async function exec(nodes,env){for(const n of nodes){if(stop)throw Object.assign(new Error('Dihentikan.'),{user:true});
+if(++steps>MAX)throw E(n.ln||1,'program terlalu panjang atau loop tak berujung (batas langkah).');
+if(n.k==='def')funcs[n.name]=n.b;
+else if(n.k==='act'){if(ACTS.includes(n.a)){const w=act(n.a,n.arg);if(w)log(`Baris ${n.ln}: ${w}`,'e');render();await sleep(+$('spd').value)}
+else if(funcs[n.a])await exec(funcs[n.a],env);else throw E(n.ln,`perintah ${n.a}() belum dikenal. Lihat Panduan kode.`)}
+else if(n.k==='for'){for(let k=0;k<n.n;k++)await exec(n.b,Object.assign({},env,{[n.v]:k}))}
+else if(n.k==='while'){while(cond(n.c,Object.assign({},ctx(),env),n.ln)){await exec(n.b,env);await sleep(0)}}
+else if(n.k==='if'){for(const b of n.br){if(b.c===null||cond(b.c,Object.assign({},ctx(),env),b.ln)){await exec(b.b,env);break}}}}}
+async function run(){if(running)return;running=true;stop=false;steps=0;funcs={};$('bRun').disabled=true;$('bStop').disabled=false;$('log').innerHTML='';persist();
+try{const ast=parse($('code').value);if(!ast.length)throw E(1,'kode masih kosong.');await exec(ast,{});log('Selesai dijalankan.','ok')}
+catch(e){log(e.user?e.message:'Terjadi kesalahan: '+e.message,'e')}
+running=false;$('bRun').disabled=false;$('bStop').disabled=true;persist();render()}
+
+$('bRun').onclick=run;$('bStop').onclick=()=>stop=true;
+$('bDay').onclick=()=>{if(!running){advance();render();persist();log(`Hari ${S.day}${rain(S.day)?': hujan turun 🌧':': cerah ☀️'}.`)}};
+$('bSave').onclick=()=>{if(!running&&confirm('Reset kebun ke awal? Kodemu tetap tersimpan.')){S=base();prev=null;render();persist();$('log').innerHTML='';log('Kebun direset.')}};
+const nums=()=>{$('nums').textContent=$('code').value.split('\n').map((_,i)=>i+1).join('\n')};
+$('code').addEventListener('input',()=>{nums();persist()});$('code').addEventListener('scroll',()=>$('nums').scrollTop=$('code').scrollTop);
+$('tpl').addEventListener('change',nums);
+$('inv').onclick=e=>{const b=e.target.closest('[data-s]');if(b){sel=b.dataset.s;render()}};
+function manual(k){if(running)return;
+const map={w:'moveUp',arrowup:'moveUp',s:'moveDown',arrowdown:'moveDown',a:'moveLeft',arrowleft:'moveLeft',d:'moveRight',arrowright:'moveRight'};
+if(map[k]){const w=act(map[k]);if(w)log(w,'e')}
+else if(k==='1'||k==='2'||k==='3')sel=NM[+k-1];
+else if(k==='n')advance();
+else if(k==='e'){const c=ctx();let a,g=null;
+if(c.at_shop){if(sum(S.hv))a='sell_all';else{a='buy';g=sel}}else if(c.at_well)a='refill';else if(c.at_home)a='sleep';
+else if(!c.tilled)a='till';else if(!c.planted){a='plant';g=S.sd[sel]>0?sel:null}else if(c.ready)a='harvest';else a='water';
+const w=act(a,g);if(w)log(w,'e')}
+else return;render();persist()}
+document.addEventListener('keydown',e=>{if(!$('title').hidden||/TEXTAREA|INPUT|SELECT/.test(document.activeElement.tagName))return;if(e.key.startsWith('Arrow'))e.preventDefault();manual(e.key.toLowerCase())});
+document.querySelector('.pad').addEventListener('click',e=>{const b=e.target.closest('[data-k]');if(b)manual(b.dataset.k)});
+$('bStart').onclick=()=>{$('title').hidden=true;fit()};
+load();nums();render();log('Siap! Pilih contoh program lalu tekan Jalankan, atau main manual dengan WASD / tombol di bawah kebun.');
+</script></body></html>
